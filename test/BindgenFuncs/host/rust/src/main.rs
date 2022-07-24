@@ -1,13 +1,29 @@
-use wasmedge_sys::*;
+use wasmedge_sdk::*;
 use std::env;
 use std::path::Path;
-use wasmedge_bindgen_host::*;
+use rust_wasmedge_bindgen_sdk::*;
+use wasmedge_sdk::config::*;
 
 fn main() {
-	let mut config = Config::create().unwrap();
-	config.wasi(true);
 
-	let mut vm = Vm::create(Some(config), None).unwrap();
+	let common_options = CommonConfigOptions::default()
+     	.bulk_memory_operations(true)
+     	.multi_value(true)
+     	.mutable_globals(true)
+     	.non_trap_conversions(true)
+     	.reference_types(true)
+     	.sign_extension_operators(true)
+     	.simd(true);
+
+	let host_options = HostRegistrationConfigOptions::default()
+		.wasi(true)
+    	.wasmedge_process(false);
+
+	let config = ConfigBuilder::new(common_options)
+							.with_host_registration_config(host_options)
+							.build().unwrap();
+	
+	let mut vm = Vm::new(Some(config)).unwrap();
 
 	// get default wasi module
 	let mut wasi_module = vm.wasi_module_mut().unwrap();
