@@ -36,69 +36,69 @@ impl<'a> Param<'a> {
 			Param::I8(v) => {
 				let length = 1;
 				let pointer = allocate(vm, length)?;
-				mem.set_data(vec![*v as u8], pointer as u32)?;
+				mem.write(vec![*v as u8], pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::U8(v) => {
 				let length = 1;
 				let pointer = allocate(vm, length)?;
-				mem.set_data(vec![*v], pointer as u32)?;
+				mem.write(vec![*v], pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::I16(v) => {
 				let length = 1;
 				let pointer = allocate(vm, length * 2)?;
 				let bytes = v.to_le_bytes();
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::U16(v) => {
 				let length = 2;
 				let pointer = allocate(vm, length * 2)?;
 				let bytes = v.to_le_bytes();
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::I32(v) => {
 				let length = 1;
 				let pointer = allocate(vm, length * 4)?;
 				let bytes = v.to_le_bytes();
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::U32(v) => {
 				let length = 1;
 				let pointer = allocate(vm, length * 4)?;
 				let bytes = v.to_le_bytes();
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::I64(v) => {
 				let length = 1;
 				let pointer = allocate(vm, length * 8)?;
 				let bytes = v.to_le_bytes();
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::U64(v) => {
 				let length = 1;
 				let pointer = allocate(vm, length * 8)?;
 				let bytes = v.to_le_bytes();
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::F32(v) => {
 				let length = 1;
 				let pointer = allocate(vm, length * 4)?;
 				let bytes = v.to_le_bytes();
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::F64(v) => {
 				let length = 1;
 				let pointer = allocate(vm, length * 8)?;
 				let bytes = v.to_le_bytes();
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::Bool(v) => {
@@ -108,7 +108,7 @@ impl<'a> Param<'a> {
 					true => 1,
 					false => 0
 				};
-				mem.set_data(vec![byte], pointer as u32)?;
+				mem.write(vec![byte], pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::VecI8(v) => {
@@ -118,7 +118,7 @@ impl<'a> Param<'a> {
 				for (pos, iv) in v.iter().enumerate() {
 					bytes[pos] = *iv as u8;
 				}
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::VecU8(v) => {
@@ -128,7 +128,7 @@ impl<'a> Param<'a> {
 				for (pos, iv) in v.iter().enumerate() {
 					bytes[pos] = *iv;
 				}
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::VecI16(v) => {
@@ -141,7 +141,7 @@ impl<'a> Param<'a> {
 						bytes[pos * 2 + i] = b[i];
 					}
 				}
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::VecU16(v) => {
@@ -154,7 +154,7 @@ impl<'a> Param<'a> {
 						bytes[pos * 2 + i] = b[i];
 					}
 				}
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::VecI32(v) => {
@@ -167,7 +167,7 @@ impl<'a> Param<'a> {
 						bytes[pos * 4 + i] = b[i];
 					}
 				}
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::VecU32(v) => {
@@ -180,7 +180,7 @@ impl<'a> Param<'a> {
 						bytes[pos * 4 + i] = b[i];
 					}
 				}
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::VecI64(v) => {
@@ -193,7 +193,7 @@ impl<'a> Param<'a> {
 						bytes[pos * 8 + i] = b[i];
 					}
 				}
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::VecU64(v) => {
@@ -206,14 +206,14 @@ impl<'a> Param<'a> {
 						bytes[pos * 8 + i] = b[i];
 					}
 				}
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 			Param::String(v) => {
 				let bytes = v.as_bytes().to_vec();
 				let length = bytes.len() as i32;
 				let pointer = allocate(vm, length)?;
-				mem.set_data(bytes, pointer as u32)?;
+				mem.write(bytes, pointer as u32)?;
 				Ok((pointer, length))
 			}
 		}
@@ -353,8 +353,8 @@ impl Bindgen {
 				}
 			};
 
-			memory.set_data(pointer.to_le_bytes(), pointer_of_pointers as u32 + pos as u32 * 4 * 2)?;
-			memory.set_data(length_of_input.to_le_bytes(), pointer_of_pointers as u32 + pos as u32 * 4 * 2 + 4)?;
+			memory.write(pointer.to_le_bytes(), pointer_of_pointers as u32 + pos as u32 * 4 * 2)?;
+			memory.write(length_of_input.to_le_bytes(), pointer_of_pointers as u32 + pos as u32 * 4 * 2 + 4)?;
 		}
 
 		let rets = self.vm.run_function(func_name, vec![WasmValue::from_i32(pointer_of_pointers), WasmValue::from_i32(inputs_count)])?;
